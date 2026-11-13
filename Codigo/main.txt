@@ -1,1 +1,345 @@
-
+{
+    "name": "Calculadore ecologica",
+    "flow": [
+        {
+            "id": 1,
+            "module": "gateway:CustomWebHook",
+            "version": 1,
+            "parameters": {
+                "hook": 3058687,
+                "maxResults": 1
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": 0,
+                    "y": 0
+                },
+                "setupValidation": {
+                    "version": 1,
+                    "configuration": "16c5cf179eea3e2f",
+                    "result": {
+                        "valid": true,
+                        "fields": []
+                    }
+                },
+                "restore": {
+                    "parameters": {
+                        "hook": {
+                            "data": {
+                                "editable": "true"
+                            },
+                            "label": "Huella Ecologica"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "hook",
+                        "type": "hook:gateway-webhook",
+                        "label": "Webhook",
+                        "required": true
+                    },
+                    {
+                        "name": "maxResults",
+                        "type": "number",
+                        "label": "Maximum number of results"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 3,
+            "module": "ai-local-agent:RunLocalAIAgent",
+            "version": 0,
+            "parameters": {
+                "makeConnectionId": 10766674
+            },
+            "mapper": {
+                "files": [],
+                "message": "carne: {{1.carne}}\ncomida local: {{1.local}}\ntransporte: {{1.transporte}}\nkm al dia: {{1.km}}\nvuelos al año: {{1.vuelos}}\nhoras de aire acondicionado: {{1.aire}}\npersonas que viven en casa: {{1.personas}}\nprendas al mes: {{1.ropa}}\ncambias de celular cada(años): {{1.celular}}\nsepara basura: {{1.separa}}",
+                "threadId": "",
+                "outputType": "text",
+                "tokenLimit": "50",
+                "modelConfig": {
+                    "timeout": "",
+                    "recursionLimit": "300",
+                    "aiCompactionEnabled": true,
+                    "iterationsFromHistoryCount": "10"
+                },
+                "defaultModel": "medium",
+                "systemPrompt": "Eres un analista de huella ecologica para alumnos de Desarrollo Sustentable del TecNM en\r\nMazatlan, Sinaloa (clima calido, uso alto de aire acondicionado).\r\nRecibiras las respuestas de un cuestionario de estilo de vida. Estima la huella ecologica de la\r\npersona.\r\nAclara que es una estimacion aproximada y no un calculo oficial.\r\nResponde en texto plano (sin asteriscos, sin markdown), en espanol, con este formato:\r\nTU HUELLA ESTIMADA\r\nHectareas globales por año: [valor aproximado]\r\nPlanetas necesarios si todos vivieran asi: [valor]\r\nPOR AREA (de mayor a menor impacto)\r\nAlimentacion: [alto / medio / bajo y por que, en 1 linea]\r\nTransporte: [...]\r\nEnergia: [...]\r\nConsumo: [...]\r\nResiduos: [...]\r\n3 ACCIONES PARA REDUCIRLA\r\n1. [la de mayor efecto]\r\n2. [...]\r\n3. [...]\r\nOPORTUNIDAD ECONOMICA\r\n[2 lineas: un negocio o servicio sustentable de la region que ayudaria a reducir esta huella]\nReglas importantes:\r\n- Reemplaza todo lo que esta entre corchetes con informacion real; no copies las instrucciones de la plantilla.\r\n- En cada area escribe el nivel y la razon en la misma linea. Ejemplo: Transporte: alto, porque recorres 30 km diarios en auto propio.\r\n- La primera linea de tu respuesta debe ser: Nota: esta es una estimacion aproximada, no un calculo oficial.\n- En POR AREA, ordena las cinco areas de mayor a menor impacto; las de nivel alto van primero.",
+                "promptCaching": "none",
+                "fallbackEnabled": false
+            },
+            "metadata": {
+                "designer": {
+                    "x": 300,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "files": {
+                            "mode": "chose"
+                        },
+                        "outputType": {
+                            "label": "Text"
+                        },
+                        "defaultModel": {
+                            "mode": "chose",
+                            "label": "MediumModel: gpt-5-nano. Reasoning: low. A balanced, quick choice for clearly defined tasks needing reliable answers rather than deep analysis"
+                        },
+                        "promptCaching": {
+                            "label": "Automatic (always on)"
+                        }
+                    },
+                    "parameters": {
+                        "makeConnectionId": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "ai-provider"
+                            },
+                            "label": "Make's AI Provider (default)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "makeConnectionId",
+                        "type": "account:ai-provider,openai-gpt-3,anthropic-claude,gemini-ai-q9zyjp,ai-agent-foundry-openai,ai-agent-foundry-non-openai,mistral-ai,cohere,groq,ai-agent-xai,amazon-bedrock,ai-agent-openai-compatible",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "defaultModel",
+                        "type": "select",
+                        "label": "Model",
+                        "required": true
+                    },
+                    {
+                        "name": "tokenLimit",
+                        "type": "number",
+                        "label": "Maximum output length (%)",
+                        "validate": {
+                            "max": 100,
+                            "min": 20
+                        }
+                    },
+                    {
+                        "name": "promptCaching",
+                        "type": "select",
+                        "label": "Prompt caching",
+                        "validate": {
+                            "enum": [
+                                "none"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "fallbackEnabled",
+                        "type": "boolean",
+                        "label": "Enable fallback connection",
+                        "required": true
+                    },
+                    {
+                        "name": "systemPrompt",
+                        "type": "text",
+                        "label": "Instructions"
+                    },
+                    {
+                        "name": "message",
+                        "type": "text",
+                        "label": "Input",
+                        "required": true
+                    },
+                    {
+                        "name": "files",
+                        "spec": [
+                            {
+                                "name": "fileName",
+                                "type": "filename",
+                                "label": "File name",
+                                "semantic": "file:name"
+                            },
+                            {
+                                "name": "data",
+                                "type": "buffer",
+                                "label": "Data",
+                                "semantic": "file:data"
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Input files"
+                    },
+                    {
+                        "name": "threadId",
+                        "type": "text",
+                        "label": "Conversation ID",
+                        "validate": {
+                            "max": 256
+                        }
+                    },
+                    {
+                        "name": "modelConfig",
+                        "spec": [
+                            {
+                                "name": "recursionLimit",
+                                "type": "number",
+                                "label": "Steps per agent call"
+                            },
+                            {
+                                "name": "iterationsFromHistoryCount",
+                                "type": "number",
+                                "label": "Maximum conversation history"
+                            },
+                            {
+                                "name": "timeout",
+                                "type": "number",
+                                "label": "Step timeout",
+                                "validate": {
+                                    "max": 600,
+                                    "min": 120
+                                }
+                            },
+                            {
+                                "name": "aiCompactionEnabled",
+                                "type": "boolean",
+                                "label": "Enable compaction",
+                                "required": true
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Model configuration"
+                    },
+                    {
+                        "name": "outputType",
+                        "type": "select",
+                        "label": "Response format",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "text",
+                                "make-schema",
+                                "udt-schema"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "tools": []
+        },
+        {
+            "id": 4,
+            "module": "gateway:WebhookRespond",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "body": "{{3.response}}",
+                "status": "200",
+                "headers": [
+                    {
+                        "key": "Content-Type",
+                        "value": "text/plain; charset=utf-8"
+                    },
+                    {
+                        "key": "Access-Control-Allow-Origin",
+                        "value": "*"
+                    }
+                ]
+            },
+            "metadata": {
+                "designer": {
+                    "x": 600,
+                    "y": 0
+                },
+                "setupValidation": {
+                    "result": {
+                        "valid": true,
+                        "fields": []
+                    },
+                    "version": 1,
+                    "configuration": "4867a1e8d9cfd10c"
+                },
+                "restore": {
+                    "expect": {
+                        "headers": {
+                            "mode": "chose",
+                            "items": [
+                                null,
+                                null
+                            ]
+                        }
+                    }
+                },
+                "expect": [
+                    {
+                        "name": "status",
+                        "type": "uinteger",
+                        "label": "Status",
+                        "required": true,
+                        "validate": {
+                            "min": 100
+                        }
+                    },
+                    {
+                        "name": "body",
+                        "type": "any",
+                        "label": "Body"
+                    },
+                    {
+                        "name": "headers",
+                        "spec": [
+                            {
+                                "name": "key",
+                                "type": "text",
+                                "label": "Key",
+                                "required": true,
+                                "validate": {
+                                    "max": 256
+                                }
+                            },
+                            {
+                                "name": "value",
+                                "type": "text",
+                                "label": "Value",
+                                "required": true,
+                                "validate": {
+                                    "max": 4096
+                                }
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Custom headers",
+                        "validate": {
+                            "maxItems": 16
+                        }
+                    }
+                ],
+                "advanced": true
+            }
+        }
+    ],
+    "metadata": {
+        "instant": true,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "us2.make.com",
+        "notes": []
+    }
+}
