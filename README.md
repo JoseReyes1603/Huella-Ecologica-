@@ -21,4 +21,4 @@ Unidad 4. Escenario económico — Tema 4.5 Estrategias de sustentabilidad (aná
 [Ver video de la práctica](https://youtube.com/shorts/2YTYSzum6ac?feature=share)
 
 ## 📊 Resultados
-[Ver PDF]()
+[Ver PDF](https://github.com/JoseReyes1603/Huella-Ecologica-/blob/main/Resultados/Practica_4.5_Huella_Ecologica_Jose_Reyes.pdf)
