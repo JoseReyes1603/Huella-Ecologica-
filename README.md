@@ -8,7 +8,7 @@ Unidad 4. Escenario económico — Tema 4.5 Estrategias de sustentabilidad (aná
 | Alumno | José Reyes Valdés Zamudio |
 | Profesor | Miguel Ángel Barrón |
 | Modalidad | Individual |
-| Página publicada | [Ver calculadora](https://TU_USUARIO.github.io/TU_REPO/) |
+| Página publicada | [Ver calculadora](https://josereyes1603.github.io/Huella-Ecologica-/Codigo/) |
 
 ## 💻 Código
 [Ver Codigo]()
