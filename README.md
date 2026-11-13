@@ -18,8 +18,7 @@ Unidad 4. Escenario económico — Tema 4.5 Estrategias de sustentabilidad (aná
 <img width="500" height="300" alt="WhatsApp Image 2026-11-12 at 1 02 57 PM" src="https://github.com/user-attachments/assets/5dccb216-7e15-4bea-b9b6-2cd8546f1de3" />
 
 ## 🎥 Video
-
-[Ver video de la práctica](img/miniatura_video.png)](https://youtu.be/TU_VIDEO)
+[Ver video de la práctica](https://youtube.com/shorts/2YTYSzum6ac?feature=share)
 
 ## 📊 Resultados
 [Ver PDF]()
