@@ -1,1 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de huella ecologica</title>
+<style>
+  :root{
+    --verde:#2e7d32; --verde-claro:#e8f5e9; --verde-medio:#66bb6a;
+    --tierra:#795548; --azul:#0277bd; --texto:#1b2a1e; --fondo:#f4f9f4;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#dff0e0 0%,var(--fondo) 40%);color:var(--texto);line-height:1.5}
+  header{background:var(--verde);color:#fff;padding:32px 20px;text-align:center}
+  header h1{margin:0 0 8px;font-size:clamp(1.6rem,4vw,2.4rem)}
+  header p{margin:0 auto;max-width:640px;opacity:.95}
+  main{max-width:820px;margin:0 auto;padding:24px 16px 48px}
+  fieldset{border:none;background:#fff;border-radius:14px;padding:18px 20px;margin:0 0 18px;box-shadow:0 2px 10px rgba(46,125,50,.12);border-left:6px solid var(--verde-medio)}
+  legend{font-weight:700;font-size:1.15rem;color:var(--verde);padding:0}
+  .campo{display:flex;flex-direction:column;margin-top:14px}
+  label{font-weight:600;margin-bottom:6px}
+  select,input{padding:10px 12px;border:1px solid #b9d7bb;border-radius:8px;font-size:1rem;background:#fbfffb}
+  select:focus,input:focus{outline:2px solid var(--verde-medio);border-color:var(--verde-medio)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0 20px}
+  button{display:block;width:100%;padding:16px;font-size:1.15rem;font-weight:700;color:#fff;background:var(--verde);border:none;border-radius:12px;cursor:pointer;transition:background .2s}
+  button:hover:not(:disabled){background:#1b5e20}
+  button:disabled{background:#9e9e9e;cursor:not-allowed}
+  #estado{text-align:center;margin:14px 0;font-weight:600;color:var(--azul);min-height:1.5em}
+  #resultado{display:none;background:var(--verde-claro);border:2px solid var(--verde-medio);border-radius:14px;padding:20px;white-space:pre-line;font-size:1rem}
+  #resultado.error{background:#ffebee;border-color:#e57373;color:#b71c1c}
+  footer{text-align:center;font-size:.85rem;color:#5d6d5f;padding:16px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🌎 Calculadora de huella ecologica</h1>
+  <p>La huella ecologica mide cuanta tierra y mar se necesita para producir lo que consumes y absorber tus residuos. Si todos vivieran como tu, ¿cuantos planetas Tierra harian falta? Contesta el cuestionario y descubrelo.</p>
+</header>
+
+<main>
+<form id="formulario">
+  <fieldset>
+    <legend>🥗 Alimentacion</legend>
+    <div class="grid">
+      <div class="campo">
+        <label for="carne">¿Cada cuanto comes carne de res o cerdo?</label>
+        <select id="carne" name="carne" required>
+          <option>Nunca</option><option>1-2 veces por semana</option>
+          <option>3-5 veces por semana</option><option>Diario</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label for="local">¿Que parte de tu comida es local o de temporada?</label>
+        <select id="local" name="local" required>
+          <option>Casi nada</option><option>La mitad</option><option>Casi toda</option>
+        </select>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>🚌 Transporte</legend>
+    <div class="grid">
+      <div class="campo">
+        <label for="transporte">Medio principal</label>
+        <select id="transporte" name="transporte" required>
+          <option>Caminar o bicicleta</option><option>Camion urbano</option>
+          <option>Moto</option><option>Auto propio</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label for="km">Kilometros que recorres al dia</label>
+        <input type="number" id="km" name="km" min="0" step="any" value="0" required>
+      </div>
+      <div class="campo">
+        <label for="vuelos">Vuelos en avion al año</label>
+        <input type="number" id="vuelos" name="vuelos" min="0" value="0" required>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>⚡ Energia</legend>
+    <div class="grid">
+      <div class="campo">
+        <label for="aire">Horas al dia de aire acondicionado en casa</label>
+        <input type="number" id="aire" name="aire" min="0" max="24" step="any" value="0" required>
+      </div>
+      <div class="campo">
+        <label for="personas">Personas que viven en tu casa</label>
+        <input type="number" id="personas" name="personas" min="1" value="1" required>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>🛍️ Consumo</legend>
+    <div class="grid">
+      <div class="campo">
+        <label for="ropa">Prendas nuevas que compras al mes</label>
+        <input type="number" id="ropa" name="ropa" min="0" value="0" required>
+      </div>
+      <div class="campo">
+        <label for="celular">¿Cada cuantos años cambias de celular?</label>
+        <input type="number" id="celular" name="celular" min="1" step="any" value="2" required>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>♻️ Residuos</legend>
+    <div class="campo">
+      <label for="separa">¿Separas la basura?</label>
+      <select id="separa" name="separa" required>
+        <option>Si</option><option>A veces</option><option>No</option>
+      </select>
+    </div>
+  </fieldset>
+
+  <button type="submit" id="boton">Calcular mi huella</button>
+</form>
+
+<div id="estado"></div>
+<div id="resultado"></div>
+</main>
+
+<footer>Practica 4.5-P2 · Desarrollo Sustentable · TecNM</footer>
+
+<script>
+  // ⬇️ PEGA AQUI LA URL DE TU WEBHOOK DE MAKE (entre las comillas)
+  const WEBHOOK_URL = "https://hook.us2.make.com/yf7wd9cxlld7x3deczd6peyzosghdxay";
+
+  const CAMPOS = ["carne","local","transporte","km","vuelos","aire","personas","ropa","celular","separa"];
+  const form = document.getElementById("formulario");
+  const boton = document.getElementById("boton");
+  const estado = document.getElementById("estado");
+  const resultado = document.getElementById("resultado");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const datos = new URLSearchParams();
+    CAMPOS.forEach(c => datos.append(c, document.getElementById(c).value));
+
+    boton.disabled = true;
+    estado.textContent = "Calculando tu huella...";
+    resultado.style.display = "none";
+    resultado.classList.remove("error");
+
+    try {
+      const resp = await fetch(WEBHOOK_URL, { method: "POST", body: datos });
+      if (!resp.ok) throw new Error("HTTP " + resp.status);
+      const texto = await resp.text();
+      resultado.textContent = texto;
+    } catch (err) {
+      resultado.textContent = "No se pudo calcular, intenta de nuevo.";
+      resultado.classList.add("error");
+    } finally {
+      estado.textContent = "";
+      resultado.style.display = "block";
+      boton.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>
 
